@@ -23,6 +23,11 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Create local.properties
+        run: |
+          echo "supabase.url=${{ secrets.SUPABASE_URL }}" > local.properties
+          echo "supabase.key=${{ secrets.SUPABASE_KEY }}" >> local.properties
+
       - name: Grant execute permission to Gradle
         run: chmod +x gradlew
 
