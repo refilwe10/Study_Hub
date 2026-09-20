@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,7 +69,6 @@ fun StudyHubApp() {
     when {
 
         showTakeQuiz -> {
-
             TakeQuizScreen(
                 viewModel = quizViewModel,
                 onBack = {
@@ -78,7 +78,6 @@ fun StudyHubApp() {
         }
 
         showQuiz -> {
-
             QuizScreen(
                 viewModel = quizViewModel,
                 onBack = {
@@ -88,7 +87,6 @@ fun StudyHubApp() {
         }
 
         showFlashcards -> {
-
             FlashcardsScreen(
                 viewModel = flashcardViewModel,
                 onBack = {
@@ -98,7 +96,6 @@ fun StudyHubApp() {
         }
 
         showAssignments -> {
-
             AssignmentScreen(
                 viewModel = assignmentViewModel,
                 onBack = {
@@ -108,7 +105,6 @@ fun StudyHubApp() {
         }
 
         showExams -> {
-
             ExamScreen(
                 viewModel = examViewModel,
                 onBack = {
@@ -118,7 +114,6 @@ fun StudyHubApp() {
         }
 
         showTimetable -> {
-
             TimetableScreen(
                 viewModel = timetableViewModel,
                 onBack = {
@@ -128,7 +123,6 @@ fun StudyHubApp() {
         }
 
         showFocusTimer -> {
-
             FocusTimerWithSessionsScreen(
                 viewModel = studySessionViewModel,
                 onBack = {
@@ -138,7 +132,6 @@ fun StudyHubApp() {
         }
 
         showSettings -> {
-
             SettingsScreen(
                 onBack = {
                     showSettings = false
@@ -147,7 +140,6 @@ fun StudyHubApp() {
         }
 
         showRegister -> {
-
             RegisterScreen(
                 viewModel = authViewModel,
                 onRegisterSuccess = {
@@ -161,7 +153,6 @@ fun StudyHubApp() {
         }
 
         showHome -> {
-
             HomeScreen(
                 onTimetable = {
                     showTimetable = true
@@ -188,13 +179,14 @@ fun StudyHubApp() {
                     showSettings = true
                 },
                 onLogout = {
-                    showHome = false
+                    authViewModel.logout {
+                        showHome = false
+                    }
                 }
             )
         }
 
         else -> {
-
             LoginScreen(
                 viewModel = authViewModel,
                 onLoginSuccess = {
@@ -222,6 +214,8 @@ fun LoginScreen(
     var password by remember {
         mutableStateOf("")
     }
+
+    val message by viewModel.message.collectAsState()
 
     Column(
         modifier = Modifier
@@ -271,6 +265,13 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        if (message.isNotEmpty()) {
+            Text(
+                text = message,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+        }
+
         Button(
             onClick = {
                 viewModel.login(
@@ -317,6 +318,9 @@ fun RegisterScreen(
     var confirmPassword by remember {
         mutableStateOf("")
     }
+
+    val message by viewModel.message.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     Column(
         modifier = Modifier
@@ -388,26 +392,40 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        if (message.isNotEmpty()) {
+            Text(
+                text = message,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+        }
+
         Button(
             onClick = {
                 viewModel.register(
                     name = name,
                     email = email,
                     password = password,
-                    confirmPassword = confirmPassword
+                    confirmPassword = confirmPassword,
+                    onSuccess = onRegisterSuccess
                 )
-
-                onRegisterSuccess()
             },
+            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Register")
+            Text(
+                if (isLoading) {
+                    "Creating Account..."
+                } else {
+                    "Register"
+                }
+            )
         }
 
         Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedButton(
             onClick = onBack,
+            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Back")

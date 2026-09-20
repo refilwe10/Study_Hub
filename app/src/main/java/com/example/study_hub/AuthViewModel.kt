@@ -21,9 +21,9 @@ class AuthViewModel : ViewModel() {
         name: String,
         email: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
+        onSuccess: () -> Unit
     ) {
-
         if (name.isBlank()) {
             _message.value = "Please enter your full name."
             return
@@ -45,25 +45,21 @@ class AuthViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-
             _isLoading.value = true
             _message.value = ""
 
             try {
-
                 supabase.auth.signUpWith(Email) {
                     this.email = email
                     this.password = password
                 }
 
                 _message.value = "Account created successfully!"
+                onSuccess()
 
             } catch (e: Exception) {
-
                 _message.value = e.message ?: "Registration failed."
-
             } finally {
-
                 _isLoading.value = false
             }
         }
@@ -74,7 +70,6 @@ class AuthViewModel : ViewModel() {
         password: String,
         onSuccess: () -> Unit
     ) {
-
         if (email.isBlank()) {
             _message.value = "Please enter your email."
             return
@@ -86,32 +81,43 @@ class AuthViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-
             _isLoading.value = true
             _message.value = ""
 
             try {
-
                 supabase.auth.signInWith(Email) {
                     this.email = email
                     this.password = password
                 }
 
                 _message.value = "Login successful!"
-
                 onSuccess()
 
             } catch (e: Exception) {
-
                 _message.value = e.message ?: "Login failed."
-
             } finally {
-
                 _isLoading.value = false
             }
         }
     }
+    fun logout(
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _message.value = ""
 
+            try {
+                supabase.auth.signOut()
+                _message.value = "Logged out successfully."
+                onSuccess()
+            } catch (e: Exception) {
+                _message.value = e.message ?: "Logout failed."
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
     fun clearMessage() {
         _message.value = ""
     }
