@@ -2,7 +2,7 @@
 
 ## Group Members
 
-| Name | Student Number |
+| Name | Student Number | 
 |---|---|
 | Refilwe Phore | ST10458818 |
 | Ntembeko Ndayi | ST10180342 |
