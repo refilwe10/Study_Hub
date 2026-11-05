@@ -1,216 +1,97 @@
-# Study Hub
+Study Hub 
 
-## Group Members
+Group Members
 
-| Name | Student Number |
-|---|---|
-| Refilwe Phore | ST10458818 |
-| Ntembeko Ndayi | ST10180342 |
+Name Student Number
+Refilwe Phore ST10458818
+Ntembeko Ndayi ST10180342
 
-Study Hub is an Android study and productivity application designed to help students organise their academic work, learning materials and study sessions in one place.
-## 1. Purpose of the Application
+Study Hub is an Android study and productivity application designed to help students organise their academic work, learning materials, and study sessions in one place.
 
-The purpose of Study Hub is to combine academic planning, learning and productivity features into one simple Android application.
+1. Purpose of the Application
 
-The application was designed based on the research completed in Part 1 of the assessment. The main ideas were influenced by existing study applications such as MyStudyLife, Quizlet and Forest.
+The purpose of Study Hub is to combine academic planning, learning, and productivity features into one simple Android application.
 
-Study Hub combines these ideas into one application rather than requiring students to use several separate applications.
+The application was designed based on the research completed in Part 1 of the assessment. The main ideas were influenced by existing study applications such as MyStudyLife, Quizlet, and Forest. Study Hub combines these ideas into one application rather than requiring students to use several separate applications.
 
-## 2. Main Features
+2. Main Features & Part 3 Innovations
 
-Study Hub currently includes:
+Study Hub includes the following core features:
 
-- User registration
-- User login and authentication
-- Secure password handling through Supabase Auth
-- Timetable management
-- Assignment Manager
-- Exam Planner
-- Flashcards
-- Quiz creation
-- Practice quizzes
-- Quiz scoring
-- Focus Timer
-- Study session recording
-- Settings
-- User logout
-- Input validation and error handling
+· User registration and login (Secure authentication via Supabase)
+· Timetable management and Exam Planner
+· Assignment Manager
+· Flashcards and Quiz creation
+· Practice quizzes and Quiz scoring
+· Focus Timer and Study session recording
 
-## 3. Technology Used
+Innovative Features Added in Part 3:
 
-The application was developed using:
+· Real-time Push Notifications: Implemented using Firebase Cloud Messaging (FCM) to send alerts to the user's device when a study session is completed or an assignment deadline is approaching.
+· Multi-language Support: The application UI natively supports English and isiZulu (or [insert your 2nd language here]), allowing users to switch languages in the Settings screen.
+· Offline Mode & Sync: Implemented local caching (via RoomDB/SharedPreferences) so users can add flashcards and notes without internet access. The app automatically synchronizes with the Supabase REST API once the connection is restored.
 
-- Kotlin
-- Android Studio
-- Jetpack Compose
-- Material 3
-- Supabase
-- Supabase Auth
-- Supabase PostgREST REST API
-- PostgreSQL database
-- GitHub
-- GitHub Actions
-- JUnit
+3. Technology Used
 
-## 4. Application Design
+· Language: Kotlin
+· UI Framework: Jetpack Compose, Material 3
+· Backend/Database: Supabase, Supabase Auth, PostgreSQL (Cloud), RoomDB (Local)
+· Networking: Supabase PostgREST REST API
+· Push Notifications: Firebase Cloud Messaging (FCM)
+· Testing & CI/CD: JUnit, GitHub, GitHub Actions
+· IDE: Android Studio
 
-The application uses Jetpack Compose to create the user interface.
+4. Application Design & User Interface
 
-The design focuses on keeping the application simple and easy to navigate. The Home screen provides access to the main study features, while individual screens are used for timetable management, assignments, exams, flashcards, quizzes, the focus timer and settings.
+The application uses Jetpack Compose to create a modern, responsive user interface. The design focuses on keeping the application simple, user-friendly, and easy to navigate. The Home screen provides access to the main study features.
 
-The application uses ViewModels to separate application logic from the user interface. This helps keep database operations and authentication logic organised.
+The app uses ViewModels to separate application logic from the UI, keeping database operations and authentication logic organised. Extensive input validation is included to prevent invalid information from being submitted and to ensure the app handles user errors gracefully without crashing.
 
-Input validation is also included to prevent invalid information from being submitted and to reduce the possibility of application crashes.
+5. Authentication and Security
 
-## 5. Authentication and Security
+Study Hub uses Supabase Auth for user registration and login. Passwords are encrypted and not stored directly by the application; authentication and password storage are handled securely by Supabase.
 
-Study Hub uses Supabase Auth for user registration and login.
+The application communicates with Supabase over the network using a publishable client key. Private database passwords and service-role keys are not included in the application source code. The project also uses Row Level Security (RLS) policies so that authenticated users can only access their own data.
 
-Passwords are not stored directly by the application. Authentication and password storage are handled by Supabase's authentication system.
+6. REST API and Database
 
-The application communicates with Supabase over the network and uses a publishable client key. Private database passwords and service-role keys are not included in the application source code.
+Study Hub uses the Supabase PostgREST API to communicate with the hosted PostgreSQL database. The application stores information such as timetable entries, assignments, exams, flashcards, quiz questions, and completed study sessions. Each user's records are associated with their authenticated user ID.
 
-The project also uses Row Level Security (RLS) policies so that authenticated users can access their own stored study information.
+7. GitHub and Version Control
 
-## 6. REST API and Database
+The project is maintained in a GitHub repository. Git was used throughout development to keep track of changes. The repository contains the full application source code, automated test suites, the CI/CD GitHub Actions workflow, and is tagged as Final_PoE for final submission.
 
-Study Hub uses the Supabase PostgREST API to communicate with the hosted database.
-
-The application stores information such as:
-
-- Timetable entries
-- Assignments
-- Exams
-- Flashcards
-- Quiz questions
-- Completed study sessions
-
-Each user's records are associated with their authenticated user ID.
-
-This allows the application to retrieve and store study information through the hosted REST API rather than relying only on data stored locally on the phone.
-
-## 7. GitHub and Version Control
-
-The project is maintained in a GitHub repository.
-
-Git was used throughout development to keep track of changes and provide version control.
-
-The project has been committed and pushed to GitHub during development, including the application source code, automated tests and GitHub Actions workflow.
-
-## 8. Automated Testing
-
-Automated testing was implemented using JUnit.
-
-The project includes tests for registration validation, including:
-
-- Valid registration information
-- Empty name validation
-- Password length validation
-- Password confirmation validation
-
-The tests are executed locally and through GitHub Actions.
-
-The GitHub Actions workflow automatically:
-
-1. Checks out the project.
-2. Sets up the Java environment.
-3. Sets up the Android environment.
-4. Runs the unit tests.
-5. Builds the debug APK.
-
-The GitHub Actions workflow has been successfully executed and passed.
-
-## 9. Error Handling
-
-The application includes validation for common invalid inputs.
-
-For example, the registration system checks that:
-
-- A name has been entered.
-- An email address has been entered.
-- The password meets the minimum length requirement.
-- The password and confirmation password match.
-
-The login system also checks for missing email and password information.
-
-Database and authentication operations use error handling so that failures can be displayed to the user rather than causing the application to crash.
-
-## 10. Running the Application
+8. Running the Application Locally
 
 To run the project:
 
-1. Clone or download the repository from GitHub.
+1. Clone the repository from GitHub.
 2. Open the project in Android Studio.
 3. Allow Gradle to synchronise.
-4. Configure the required Supabase connection properties.
-5. Connect an Android device or start an Android emulator.
-6. Run the application using Android Studio.
+4. Configure the required Supabase connection properties in local.properties (URL and publishable key).
+5. Connect a physical Android device or start an emulator.
+6. Run the application.
 
-The Supabase URL and publishable key are kept outside the main source code using the project's local configuration.
+9. Demonstration Video
 
-## 11. Testing Device
+Below is the link to the demonstration video showcasing the Study Hub prototype running on a physical Android device. The video includes a voice-over explaining the REST API, database, authentication, and the new Part 3 features.
 
-The prototype was tested on an Android smartphone.
+Video Link: [Insert your YouTube or Google Drive video link here]
 
-Testing included:
+10. Play Store Preparation
 
-- Registration
-- Login
-- Logout
-- Timetable
-- Assignment Manager
-- Exam Planner
-- Flashcards
-- Quiz creation
-- Practice quizzes
-- Focus Timer
-- Settings
-- Database saving and retrieval
-- Invalid input handling
+(Add a screenshot of your app's home screen here)
 
-## 12. Demonstration Video
+The application has been prepared for final publication, including a custom app icon, final image assets, and a user-friendly interface.
 
-A demonstration video will be provided showing the Study Hub prototype running on an Android device.
+11. Project Structure
 
-The demonstration will cover:
+The project is organised into clean architectural layers using Kotlin files for screens and ViewModels. Examples include:
 
-- User registration
-- User login
-- Application navigation
-- Timetable
-- Assignment Manager
-- Exam Planner
-- Flashcards
-- Quiz creation
-- Practice Quiz
-- Focus Timer
-- Settings
-- REST API/database functionality
-- Logout
+· AuthViewModel.kt, TimetableViewModel.kt, AssignmentViewModel.kt
+· ExamViewModel.kt, FlashcardViewModel.kt, QuizViewModel.kt
+· StudySessionViewModel.kt, SettingsScreen.kt
 
-**Video link:** To be added before final submission.
+12. Conclusion
 
-## 13. Project Structure
-
-The project is organised into different Kotlin files for the application's screens and ViewModels.
-
-Examples include:
-
-- `MainActivity.kt`
-- `AuthViewModel.kt`
-- `TimetableViewModel.kt`
-- `AssignmentViewModel.kt`
-- `ExamViewModel.kt`
-- `FlashcardViewModel.kt`
-- `QuizViewModel.kt`
-- `StudySessionViewModel.kt`
-- `SettingsScreen.kt`
-- `TakeQuizScreen.kt`
-
-The project also contains the automated testing and GitHub Actions workflow directories.
-
-## 14. Conclusion
-
-Study Hub provides a single Android application for managing academic planning, learning and study productivity.
-
-The prototype demonstrates authentication, database connectivity, REST API communication, study management features, automated testing and version control. The application was developed iteratively and tested throughout the development process to identify and correct errors.
+Study Hub provides a single Android application for managing academic planning, learning, and study productivity. The prototype demonstrates secure authentication, REST API communication, offline sync, push notifications, automated testing, and CI/CD pipeline integration. The application was developed iteratively and tested on a physical device throughout the process.
