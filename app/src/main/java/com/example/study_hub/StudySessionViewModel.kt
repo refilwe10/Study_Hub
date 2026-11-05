@@ -25,6 +25,40 @@ class StudySessionViewModel : ViewModel() {
     private val _totalMinutes = MutableStateFlow(0)
     val totalMinutes: StateFlow<Int> = _totalMinutes.asStateFlow()
 
+    private val _sessionCount = MutableStateFlow(0)
+    val sessionCount: StateFlow<Int> = _sessionCount.asStateFlow()
+
+    fun loadSessionStats() {
+
+        viewModelScope.launch {
+            try {
+                val user = supabase.auth.currentUserOrNull()
+
+                if (user == null) {
+                    return@launch
+                }
+
+                val sessions = supabase
+                    .from("study_sessions")
+                    .select {
+                        filter {
+                            eq("user_id", user.id)
+                        }
+                    }
+                    .decodeList<StudySession>()
+
+                _sessionCount.value = sessions.size
+
+                _totalMinutes.value =
+                    sessions.sumOf { it.duration_minutes }
+
+            } catch (e: Exception) {
+                _message.value =
+                    e.message ?: "Failed to load study sessions."
+            }
+        }
+    }
+
     fun saveCompletedSession(durationMinutes: Int) {
 
         if (durationMinutes <= 0) {
@@ -50,7 +84,9 @@ class StudySessionViewModel : ViewModel() {
                     .from("study_sessions")
                     .insert(session)
 
+                _sessionCount.value += 1
                 _totalMinutes.value += durationMinutes
+
                 _message.value = "Study session saved!"
 
             } catch (e: Exception) {
